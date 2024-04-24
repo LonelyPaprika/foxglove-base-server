@@ -1,0 +1,3 @@
+protobuf
+foxglove-websocket
+foxglove_base_msgs
