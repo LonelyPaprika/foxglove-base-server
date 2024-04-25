@@ -8,8 +8,6 @@ from server import FoxgloveServerHandler
 from channel import Channel
 from msg import Msg
 
-
-
 def get_schema(msg_module: ModuleType, msg_bin: str):
     with open(os.path.join(os.path.dirname(msg_module.__file__), msg_bin), "rb") as schema_bin:
         return standard_b64encode(schema_bin.read()).decode("ascii")

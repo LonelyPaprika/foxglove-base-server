@@ -10,7 +10,6 @@ class FoxgloveServerHandler:
         self.address = address
         self.port = port
         self.server_name = server_name
-        self.value = 0
         self.msgs: List[Msg] = []
 
     def add_msg(self, msg: Msg):
