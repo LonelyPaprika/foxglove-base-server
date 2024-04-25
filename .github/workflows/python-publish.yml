@@ -1,0 +1,64 @@
+name: Python package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build_wheel:
+    name: build wheel
+    runs-on: macos-12
+            
+    steps:
+      
+      - uses: actions/checkout@v4
+
+      - name: build wheel
+        run: pip wheel -w . . --extra-index-url http://150.230.201.125/simple/ --trusted-host 150.230.201.125
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fbs-wheel
+          path: ./foxglove_base_server-*-py3-none-any.whl
+  
+  build_sdist:
+    name: build source distribution
+    runs-on: macos-12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build sdist
+        run: pipx run build --sdist
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fbs-source
+          path: dist/*.tar.gz
+
+  upload_pypi:
+    needs: [build_wheel, build_sdist]
+    runs-on: macos-12
+    steps:
+      - run: mkdir out
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: fbs-source
+          path: out
+      
+      - uses: actions/download-artifact@v4
+        with:
+          name: fbs-wheel
+          path: out
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine  
+
+      - name: Build and publish
+        run: |
+          twine upload --verbose --repository-url http://150.230.201.125/ --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }} out/*
+  
