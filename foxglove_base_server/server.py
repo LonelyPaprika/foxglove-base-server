@@ -2,7 +2,7 @@
 import asyncio
 import time
 from foxglove_websocket.server import FoxgloveServer
-from msg import Msg
+from .msg import Msg
 from typing import List
 
 class FoxgloveServerHandler:
@@ -15,10 +15,10 @@ class FoxgloveServerHandler:
     def add_msg(self, msg: Msg):
         self.msgs.append(msg)
 
-    def update_msg(self, msg: Msg):
+    def update_msg(self, new_msg: Msg):
         for (idx, m) in enumerate(self.msgs):
-            if m.channel.topic == msg.channel.topic:
-                self.msgs[idx] = m
+            if m.channel.topic == new_msg.channel.topic:
+                self.msgs[idx].msg = new_msg.msg
 
     async def load_channel(self, server):
         for msg in self.msgs:

@@ -1,4 +1,4 @@
-from channel import Channel
+from .channel import Channel
 
 class Msg:
     def __init__(self, msg, channel: Channel):
@@ -9,6 +9,11 @@ class Msg:
     def msg(self):
         return self._msg
     
+    @msg.setter
+    def msg(self, new_msg):
+        self._msg = new_msg
+    
     @property
     def channel(self):
         return self._channel
+        
