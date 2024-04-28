@@ -11,6 +11,7 @@ class FoxgloveServerHandler:
         self.port = port
         self.server_name = server_name
         self.msgs: List[Msg] = []
+        self.running_state = True
 
     def add_msg(self, msg: Msg):
         self.msgs.append(msg)
@@ -37,10 +38,13 @@ class FoxgloveServerHandler:
             await self.send_messages(server)
 
     async def send_messages(self, server):
-        while True:
+        while self.running_state:
             await asyncio.sleep(0.2)
             for msg in self.msgs:
                 await self.send_message(msg, server)
+    
+    def stop(self):
+        self.running_state = False
 
     async def send_message(self, msg: Msg, server):
         await server.send_message(
