@@ -3,7 +3,7 @@ from pathlib import Path
 
 setup(
     name='foxglove_base_server',
-    version='1.0',
+    version='1.0.1',
     packages=find_packages(),
     package_data={'foxglove_base_server': ['examples/test.py']},
     install_requires=Path('requirements.txt').read_text().splitlines(),
